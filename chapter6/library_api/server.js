@@ -4,7 +4,7 @@ import formbody from '@fastify/formbody';
 import routes from './routes/index.js';
 const fastify = Fastify();
 fastify.register(formbody);
-
+ 
 
 const port = 3000;
 
