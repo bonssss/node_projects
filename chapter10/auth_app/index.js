@@ -1,19 +1,25 @@
-import Fastify from "fastify";
+import Fastify from "fastify"; 
+import fastifyFormbody from "@fastify/formbody"; 
+import fastifyView from "@fastify/view"; 
+import handlebars from "handlebars"; 
 
-const fastify = Fastify()
+const app = Fastify(); 
+const PORT = 3000; 
 
-
-
-const port = 3000
-
-fastify.get('/',async (request,reply)=>{
-    reply.send("hello")
+await app.register(fastifyFormbody); 
+await app.register(fastifyView, { 
+  engine: { handlebars },
+  root: "views",
 });
-try{
-    await fastify.listen({ port });
-    console.log(`Server is running at http://localhost:${port}`);
 
-}catch(err){
-    console.error('Error starting server:', err);
-    process.exit(1);
+app.get("/", async (request, reply) => { 
+  reply.send("Welcome!"); 
+});
+
+try {
+  const address = await app.listen({ port: PORT, host: "127.0.0.1" }); 
+  console.log(`App listening on ${address}`);
+} catch (err) {
+  console.error(err);
+  process.exit(1);
 }
